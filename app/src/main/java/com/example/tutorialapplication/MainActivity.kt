@@ -24,7 +24,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberImagePainter
+import com.example.tutorialapplication.screens.DetailScreen
+import com.example.tutorialapplication.screens.ListScreen
 import com.example.tutorialapplication.ui.theme.TutorialApplicationTheme
 
 class MainActivity : ComponentActivity() {
@@ -32,29 +37,20 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             TutorialApplicationTheme {
-                //Alignment using a Column - items are stacked underneath each other, comment them in/out
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Top,
-                ) {
-                    TestText("Falah")
-                    ListExample()
-                    TestButton()
-                    ImageExample()
-                }
+                val navController = rememberNavController()
 
-                //Alignment using a Box - items stacked on top of each other, comment them in/out
-//                Box(
-//                    modifier = Modifier
-//                        .fillMaxSize(),
-//                    contentAlignment = Alignment.TopCenter
-//                ) {
-//                    TestText("Falah")
-//                    ListExample()
-//                    TestButton()
-//                    ImageExample()
-//                }
+                NavHost(
+                    navController = navController,
+                    startDestination = "ListScreen", //this is the screen we start on
+                    builder = {
+                        composable(route = "ListScreen") {
+                            ListScreen(navController) //we pass in the navController so it can be used in the Screen
+                        }
+                        composable(route = "DetailScreen") {
+                            DetailScreen(navController)
+                        }
+                    }
+                )
             }
         }
     }
