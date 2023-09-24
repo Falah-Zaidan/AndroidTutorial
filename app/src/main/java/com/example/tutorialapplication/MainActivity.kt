@@ -14,23 +14,30 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import coil.compose.rememberImagePainter
 import com.example.tutorialapplication.screens.DetailScreen
 import com.example.tutorialapplication.screens.ListScreen
 import com.example.tutorialapplication.ui.theme.TutorialApplicationTheme
+import com.example.tutorialapplication.viewmodel.ExampleViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,15 +46,31 @@ class MainActivity : ComponentActivity() {
             TutorialApplicationTheme {
                 val navController = rememberNavController()
 
+                val viewModel = ExampleViewModel()
+
                 NavHost(
                     navController = navController,
                     startDestination = "ListScreen", //this is the screen we start on
                     builder = {
                         composable(route = "ListScreen") {
-                            ListScreen(navController) //we pass in the navController so it can be used in the Screen
+                            ListScreen(
+                                navController,
+                                viewModel.state
+                            ) //we pass in the navController so it can be used in the Screen
                         }
-                        composable(route = "DetailScreen") {
-                            DetailScreen(navController)
+
+                        composable(route = "DetailScreen/{character_id}",
+                            arguments = listOf(
+                                navArgument("character_id") {
+                                    type = NavType.StringType
+                                }
+                            )) { backStackEntry ->
+
+                            //Get the characterID that is passed in with navigation
+                            val characterId =
+                                backStackEntry.arguments?.getString("character_id") ?: ""
+
+                            DetailScreen(viewModel.state.value, characterId)
                         }
                     }
                 )
