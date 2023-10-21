@@ -51,7 +51,9 @@ class MainActivity : ComponentActivity() {
                         composable(route = "ListScreen") {
                             ListScreen(
                                 navController,
-                                viewModel._state.collectAsState().value
+                                viewModel._state.collectAsState().value,
+                                filterCharacters = { viewModel.filterCharacters(name = it) },
+                                resetCharacters = { viewModel.resetCharacters() }
                             ) //we pass in the navController so it can be used in the Screen
                         }
 

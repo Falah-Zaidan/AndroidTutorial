@@ -14,23 +14,27 @@ class CharacterViewModel(
 ) : ViewModel() {
 
     //MutableStateFlow instead of 'mutableStateOf{}' - https://stackoverflow.com/questions/68702217/mutablestate-in-view-model
-    val state: MutableStateFlow<State> = MutableStateFlow(State())
-    val _state: StateFlow<State> get() = state
+    var _state: MutableStateFlow<State> = MutableStateFlow(State())
+    val state: StateFlow<State> get() = _state
 
     init {
         getCharacters()
     }
 
     fun getCharacters() {
-        state.value = state.value.copy(isLoading = true)
+        _state.value = state.value.copy(isLoading = true)
 
         viewModelScope.launch {
             try {
                 val characterList = retrofitClient.getCharacters()
 //                state.value.characters = characterList
-                state.value = state.value.copy(characters = characterList, isLoading = false)
+                _state.value = state.value.copy(
+                    characters = characterList,
+                    filteredCharacters = characterList,
+                    isLoading = false
+                )
             } catch (e: Exception) {
-                state.value = state.value.copy(displayError = true, isLoading = false)
+                _state.value = state.value.copy(displayError = true, isLoading = false)
 
                 if (e is HttpException) {
                     when (e.code()) {
@@ -62,6 +66,20 @@ class CharacterViewModel(
                 }
             }
         }
+    }
+
+    fun filterCharacters(name: String) {
+
+        val characters = _state.value.characters
+        val filteredCharacter = characters.filter { name == it.name }
+
+        _state.value = _state.value.copy(filteredCharacters = filteredCharacter)
+
+    }
+
+    fun resetCharacters() {
+        val characters = state.value.characters
+        _state.value = _state.value.copy(filteredCharacters = characters)
     }
 }
 

@@ -85,4 +85,7 @@ dependencies {
 
     testImplementation(project(":shared-test"))
     androidTestImplementation(project(":shared-test"))
+
+    implementation("androidx.compose.material3:material3:1.1.2")
+
 }

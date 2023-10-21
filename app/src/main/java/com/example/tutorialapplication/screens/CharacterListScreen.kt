@@ -22,11 +22,17 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.tutorialapplication.components.SearchBarComponent
 import com.example.tutorialapplication.viewmodel.State
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ListScreen(navController: NavController, state: State) {
+fun ListScreen(
+    navController: NavController,
+    state: State,
+    filterCharacters: (String) -> Unit,
+    resetCharacters: () -> Unit
+) {
 
     Scaffold(
         topBar = {
@@ -38,16 +44,20 @@ fun ListScreen(navController: NavController, state: State) {
                 modifier = Modifier
                     .padding(innerPadding)
                     .fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
+                verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 if (state.isLoading) {
                     CircularProgressIndicator()
-                } else if (state.displayError){
+                } else if (state.displayError) {
                     Text("Error")
                 } else {
+                    SearchBarComponent(
+                        filterCharacterFunc = filterCharacters,
+                        resetCharactersFunc = resetCharacters
+                    )
                     LazyColumn(Modifier.testTag("character_list")) {
-                        items(state.characters) { item ->
+                        items(state.filteredCharacters) { item ->
                             Box(
                                 modifier = Modifier.fillMaxWidth(),
                                 contentAlignment = Alignment.CenterStart
