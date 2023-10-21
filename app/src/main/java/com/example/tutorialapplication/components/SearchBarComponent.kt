@@ -48,6 +48,7 @@ fun SearchBarComponent(filterCharacterFunc : (String) -> Unit, resetCharactersFu
                 contentDescription = "clear icon",
                 modifier = Modifier.clickable {
                     resetCharactersFunc.invoke()
+                    text = ""
                 }
             )
         }
