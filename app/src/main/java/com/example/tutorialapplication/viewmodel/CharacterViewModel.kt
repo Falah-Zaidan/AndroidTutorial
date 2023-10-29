@@ -1,9 +1,11 @@
 package com.example.tutorialapplication.viewmodel
 
 import android.util.Log
+import androidx.compose.ui.text.toLowerCase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tutorialapplication.api.HPService
+import com.example.tutorialapplication.api.model.Character
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -19,6 +21,7 @@ class CharacterViewModel(
 
     init {
         getCharacters()
+        getSpells()
     }
 
     fun getCharacters() {
@@ -37,32 +40,27 @@ class CharacterViewModel(
                 _state.value = state.value.copy(displayError = true, isLoading = false)
 
                 if (e is HttpException) {
-                    when (e.code()) {
-                        400 -> { //Bad request
-                            Log.e("HttpException", "${e.code()}: ${e.message}")
-                            //Do something
-                        }
+                    Log.e("HttpException", "${e.code()}: ${e.message}")
+                }
+            }
+        }
+    }
 
-                        401 -> { //Unauthorized Error
-                            Log.e("HttpException", "${e.code()}: ${e.message}")
-                            //Do something
-                        }
+    fun getSpells() {
+        _state.value = state.value.copy(isLoading = true)
 
-                        403 -> { //Forbidden
-                            Log.e("HttpException", "${e.code()}: ${e.message}")
-                            //Do something
-                        }
+        viewModelScope.launch {
+            try {
+                val spellList = retrofitClient.getSpells()
+                _state.value = state.value.copy(
+                    spells = spellList,
+                    isLoading = false
+                )
+            } catch (e: Exception) {
+                _state.value = state.value.copy(displayError = true, isLoading = false)
 
-                        404 -> { //Not found
-                            Log.e("HttpException", "${e.code()}: ${e.message}")
-                            //Do something
-                        }
-
-                        500 -> { //Internal Server Error
-                            Log.e("HttpException", "${e.code()}: ${e.message}")
-                            //Do something
-                        }
-                    }
+                if (e is HttpException) {
+                    Log.e("HttpException", "${e.code()}: ${e.message}")
                 }
             }
         }
@@ -71,7 +69,7 @@ class CharacterViewModel(
     fun filterCharacters(name: String) {
 
         val characters = _state.value.characters
-        val filteredCharacter = characters.filter { name == it.name }
+        val filteredCharacter = characters.filter { name.lowercase() == it.name?.lowercase() }
 
         _state.value = _state.value.copy(filteredCharacters = filteredCharacter)
 
@@ -81,8 +79,32 @@ class CharacterViewModel(
         val characters = state.value.characters
         _state.value = _state.value.copy(filteredCharacters = characters)
     }
-}
 
-//unsuccessful character response
-//e.localizedMessage?.let { Log.e("Unsuccessful response", it) }
+    fun likeCharacter(characterId: String) {
+        val characters = state.value.filteredCharacters
+
+        val character = characters.single { it.id == characterId }
+
+        //Create a new Character object with the favourite field set to true/false when the user triggers the method
+        val newCharacter: Character = if(!character.favourite) {
+            character.copy(favourite = true)
+        } else {
+            character.copy(favourite = false)
+        }
+
+        //create a new list and copy all elements from 'filteredCharacters' except the one the user has liked,
+        //we copy the newCharacter object with 'favourite' set to true/false
+        val newList = mutableListOf<Character>()
+
+        for (character in characters) {
+            if (character.id == characterId) {
+                newList.add(newCharacter)
+            } else {
+                newList.add(character)
+            }
+        }
+
+        _state.value = _state.value.copy(filteredCharacters = newList)
+    }
+}
 

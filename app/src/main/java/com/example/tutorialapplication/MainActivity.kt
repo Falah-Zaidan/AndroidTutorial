@@ -31,7 +31,9 @@ import androidx.navigation.navArgument
 import coil.compose.rememberImagePainter
 import com.example.tutorialapplication.api.RetrofitClient
 import com.example.tutorialapplication.screens.DetailScreen
+import com.example.tutorialapplication.screens.FavouriteScreen
 import com.example.tutorialapplication.screens.ListScreen
+import com.example.tutorialapplication.screens.SpellScreen
 import com.example.tutorialapplication.ui.theme.TutorialApplicationTheme
 import com.example.tutorialapplication.viewmodel.CharacterViewModel
 
@@ -50,11 +52,25 @@ class MainActivity : ComponentActivity() {
                     builder = {
                         composable(route = "ListScreen") {
                             ListScreen(
-                                navController,
-                                viewModel._state.collectAsState().value,
+                                navController = navController,
+                                state = viewModel.state.collectAsState().value,
                                 filterCharacters = { viewModel.filterCharacters(name = it) },
                                 resetCharacters = { viewModel.resetCharacters() }
                             ) //we pass in the navController so it can be used in the Screen
+                        }
+
+                        composable(route = "SpellScreen") {
+                            SpellScreen(
+                                navController = navController,
+                                state = viewModel.state.collectAsState().value
+                            )
+                        }
+
+                        composable(route = "FavouriteScreen") {
+                            FavouriteScreen(
+                                navController = navController,
+                                state = viewModel.state.collectAsState().value
+                            )
                         }
 
                         composable(route = "DetailScreen/{character_id}",
@@ -68,7 +84,10 @@ class MainActivity : ComponentActivity() {
                             val characterId =
                                 backStackEntry.arguments?.getString("character_id") ?: ""
 
-                            DetailScreen(viewModel._state.collectAsState().value, characterId)
+                            DetailScreen(
+                                state = viewModel.state.collectAsState().value,
+                                characterId = characterId,
+                                likeCharacter = { viewModel.likeCharacter(characterId) })
                         }
                     }
                 )
@@ -138,7 +157,7 @@ fun ImageExample() {
 
     //Vector asset created using the Clip art library (right click drawable folder -> New -> Vector Asset)
     Image(
-        painterResource(id = R.drawable.ic_android_black_24dp),
+        painterResource(id = R.drawable.ic_launcher_background),
         contentDescription = "Android symbol"
     )
 

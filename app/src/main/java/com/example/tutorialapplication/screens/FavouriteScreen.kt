@@ -38,16 +38,14 @@ import com.example.tutorialapplication.viewmodel.State
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ListScreen(
+fun FavouriteScreen(
     navController: NavController,
-    state: State,
-    filterCharacters: (String) -> Unit,
-    resetCharacters: () -> Unit
+    state: State
 ) {
 
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(title = { Text(text = "Characters", fontSize = 30.sp) })
+            CenterAlignedTopAppBar(title = { Text(text = "Favourites", fontSize = 30.sp) })
         },
         bottomBar = {
             BottomNavigationBar(navController = navController)
@@ -65,12 +63,8 @@ fun ListScreen(
                 } else if (state.displayError) {
                     Text("Error")
                 } else {
-                    SearchBarComponent(
-                        filterCharacterFunc = filterCharacters,
-                        resetCharactersFunc = resetCharacters
-                    )
-                    LazyColumn(Modifier.testTag("character_list")) {
-                        items(state.filteredCharacters) { item ->
+                    LazyColumn(Modifier.testTag("favourite_list")) {
+                        items(state.filteredCharacters.filter { it.favourite == true }) { item ->
                             Box(
                                 modifier = Modifier.fillMaxWidth(),
                                 contentAlignment = Alignment.CenterStart
@@ -92,7 +86,7 @@ fun ListScreen(
                                         horizontalAlignment = Alignment.CenterHorizontally
                                     ) {
 
-                                        Box() {
+                                        Box {
                                             Image(
                                                 painter = image,
                                                 contentDescription = "Character Image",
@@ -117,25 +111,7 @@ fun ListScreen(
                                                     )
                                                 )
                                             }
-                                            Box(
-                                                modifier = Modifier.fillMaxWidth().padding(end = 20.dp),
-                                                contentAlignment = Alignment.CenterEnd,
-                                            ) {
-                                                if (item.favourite) {
-                                                    Image(
-                                                        painterResource(id = R.drawable.baseline_favorite_24),
-                                                        contentDescription = "heart filled"
-                                                    )
-                                                } else {
-                                                    //display something else
-                                                    Image(
-                                                        painterResource(id = R.drawable.baseline_favorite_border_24),
-                                                        contentDescription = "heart outlined"
-                                                    )
-                                                }
-                                            }
                                         }
-
                                     }
                                 }
                             }

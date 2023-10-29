@@ -66,7 +66,9 @@ data class Character(
     val alive: String?,
 
     @SerializedName("image")
-    val image: String?
+    val image: String?,
+
+    val favourite: Boolean = false
 )
 
 data class Wand(
