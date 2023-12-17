@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -27,7 +28,7 @@ import com.example.tutorialapplication.viewmodel.State
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailScreen(state: State, characterId: String, likeCharacter: () -> Unit) {
+fun CharacterDetailScreen(state: State, characterId: String, likeCharacter: () -> Unit) {
 
     val character = state.filteredCharacters.single { it.id == characterId }
 
@@ -54,6 +55,7 @@ fun DetailScreen(state: State, characterId: String, likeCharacter: () -> Unit) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(400.dp)
+                        .fillMaxWidth()
                         .padding(16.dp),
                     contentScale = ContentScale.Crop,
                     alignment = Alignment.Center
@@ -67,7 +69,7 @@ fun DetailScreen(state: State, characterId: String, likeCharacter: () -> Unit) {
                         Text(
                             text = character.name.toString(),
                             style = TextStyle(
-                                fontSize = 24.sp
+                                fontSize = 32.sp
                             )
                         )
                         Text(

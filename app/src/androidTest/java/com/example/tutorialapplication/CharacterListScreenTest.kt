@@ -1,58 +1,62 @@
 package com.example.tutorialapplication
 
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performScrollToNode
 import androidx.navigation.compose.rememberNavController
-import com.example.tutorialapplication.screens.ListScreen
-import com.example.tutorialapplication.ui.theme.TutorialApplicationTheme
-import com.example.tutorialapplication.util.ValidCharacterData
-import com.example.tutorialapplication.util.serializeCharacterData
+import com.example.tutorialapplication.screens.CharacterListScreen
 import com.example.tutorialapplication.viewmodel.State
 import org.junit.Before
-import org.junit.Test
 import org.junit.Rule
+import org.junit.Test
 
-//class CharacterListScreenTest {
-//
-//    @get:Rule
-//    val composeTestRule = createComposeRule()
-//
-//    private val characterData = serializeCharacterData(ValidCharacterData.data)
-//
-//    @Before
-//    fun setUp() {
-//        composeTestRule.setContent {
-//            TutorialApplicationTheme {
-//                val navController = rememberNavController()
-//
-//                val state = State(
-//                    characters = characterData.toMutableList()
-//                )
-//
-//                ListScreen(
-//                    state = state,
-//                    navController = navController
-//                )
-//            }
-//        }
-//    }
-//
-//    @Test
-//    fun areCharactersShown() {
-//        //Pick the Start/Middle/Last item, scroll to them and check that they exist on the screen
-//
-//        val firstCharacter = characterData.first()
-//        val middleCharacter = characterData[characterData.size/2]
-//        val lastCharacter = characterData.last()
-//
-//        composeTestRule.onNodeWithTag("character_list").performScrollToNode(hasText(firstCharacter.name!!))
-//        composeTestRule.onNodeWithText(firstCharacter.name!!).assertIsDisplayed()
-//
-//        composeTestRule.onNodeWithTag("character_list").performScrollToNode(hasText(middleCharacter.name!!))
-//        composeTestRule.onNodeWithText(middleCharacter.name!!).assertIsDisplayed()
-//
-//        composeTestRule.onNodeWithTag("character_list").performScrollToNode(hasText(lastCharacter.name!!))
-//        composeTestRule.onNodeWithText(lastCharacter.name!!).assertIsDisplayed()
-//    }
-//
-//}
+class CharacterListScreenTest {
+
+    @get:Rule
+    val composeTestRule = createComposeRule()
+
+    val characterList = serializeCharacterData(CharacterData.data)
+
+    @Before
+    fun setUp() {
+        composeTestRule.setContent {
+            val navController = rememberNavController()
+
+            val state = State(
+                characters = characterList,
+                filteredCharacters = characterList
+            )
+
+            CharacterListScreen(
+                navController = navController,
+                state = state,
+                filterCharacters = {},
+                resetCharacters = {})
+        }
+    }
+
+    @Test
+    fun testCharactersArePresentInList() {
+
+        val firstCharacter = characterList.first()
+        val middleCharacter = characterList.get(characterList.size / 2)
+        val lastCharacter = characterList.last()
+
+        composeTestRule.onNodeWithTag("character_list")
+            .performScrollToNode(hasText(firstCharacter.name!!))
+        composeTestRule.onNodeWithText(firstCharacter.name!!).assertIsDisplayed()
+
+        composeTestRule.onNodeWithTag("character_list")
+            .performScrollToNode(hasText(middleCharacter.name!!))
+        composeTestRule.onNodeWithText(middleCharacter.name!!).assertIsDisplayed()
+
+        composeTestRule.onNodeWithTag("character_list")
+            .performScrollToNode(hasText(lastCharacter.name!!))
+        composeTestRule.onNodeWithText(lastCharacter.name!!).assertIsDisplayed()
+
+    }
+
+}

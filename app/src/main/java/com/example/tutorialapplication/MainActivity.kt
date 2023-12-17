@@ -29,13 +29,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import coil.compose.rememberImagePainter
-import com.example.tutorialapplication.api.RetrofitClient
-import com.example.tutorialapplication.screens.DetailScreen
+import com.example.tutorialapplication.api.HPNetworkClient
+import com.example.tutorialapplication.screens.CharacterDetailScreen
 import com.example.tutorialapplication.screens.FavouriteScreen
-import com.example.tutorialapplication.screens.ListScreen
+import com.example.tutorialapplication.screens.CharacterListScreen
 import com.example.tutorialapplication.screens.SpellScreen
 import com.example.tutorialapplication.ui.theme.TutorialApplicationTheme
-import com.example.tutorialapplication.viewmodel.CharacterViewModel
+import com.example.tutorialapplication.viewmodel.HPViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,14 +44,14 @@ class MainActivity : ComponentActivity() {
             TutorialApplicationTheme {
                 val navController = rememberNavController()
 
-                val viewModel = CharacterViewModel(RetrofitClient.createHttpClient())
+                val viewModel = HPViewModel(HPNetworkClient.createHttpClient())
 
                 NavHost(
                     navController = navController,
                     startDestination = "ListScreen", //this is the screen we start on
                     builder = {
                         composable(route = "ListScreen") {
-                            ListScreen(
+                            CharacterListScreen(
                                 navController = navController,
                                 state = viewModel.state.collectAsState().value,
                                 filterCharacters = { viewModel.filterCharacters(name = it) },
@@ -84,7 +84,7 @@ class MainActivity : ComponentActivity() {
                             val characterId =
                                 backStackEntry.arguments?.getString("character_id") ?: ""
 
-                            DetailScreen(
+                            CharacterDetailScreen(
                                 state = viewModel.state.collectAsState().value,
                                 characterId = characterId,
                                 likeCharacter = { viewModel.likeCharacter(characterId) })

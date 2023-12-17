@@ -1,7 +1,6 @@
 package com.example.tutorialapplication.viewmodel
 
 import android.util.Log
-import androidx.compose.ui.text.toLowerCase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tutorialapplication.api.HPService
@@ -11,8 +10,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
-class CharacterViewModel(
-    val retrofitClient: HPService
+class HPViewModel(
+    private val hpService: HPService
 ) : ViewModel() {
 
     //MutableStateFlow instead of 'mutableStateOf{}' - https://stackoverflow.com/questions/68702217/mutablestate-in-view-model
@@ -29,7 +28,7 @@ class CharacterViewModel(
 
         viewModelScope.launch {
             try {
-                val characterList = retrofitClient.getCharacters()
+                val characterList = hpService.getCharacters()
 //                state.value.characters = characterList
                 _state.value = state.value.copy(
                     characters = characterList,
@@ -51,7 +50,7 @@ class CharacterViewModel(
 
         viewModelScope.launch {
             try {
-                val spellList = retrofitClient.getSpells()
+                val spellList = hpService.getSpells()
                 _state.value = state.value.copy(
                     spells = spellList,
                     isLoading = false
@@ -66,27 +65,13 @@ class CharacterViewModel(
         }
     }
 
-    fun filterCharacters(name: String) {
-
-        val characters = _state.value.characters
-        val filteredCharacter = characters.filter { name.lowercase() == it.name?.lowercase() }
-
-        _state.value = _state.value.copy(filteredCharacters = filteredCharacter)
-
-    }
-
-    fun resetCharacters() {
-        val characters = state.value.characters
-        _state.value = _state.value.copy(filteredCharacters = characters)
-    }
-
     fun likeCharacter(characterId: String) {
-        val characters = state.value.filteredCharacters
+        val characters = state.value.characters
 
         val character = characters.single { it.id == characterId }
 
         //Create a new Character object with the favourite field set to true/false when the user triggers the method
-        val newCharacter: Character = if(!character.favourite) {
+        val newCharacter: Character = if (!character.favourite) {
             character.copy(favourite = true)
         } else {
             character.copy(favourite = false)
@@ -104,7 +89,25 @@ class CharacterViewModel(
             }
         }
 
-        _state.value = _state.value.copy(filteredCharacters = newList)
+        _state.value = _state.value.copy(
+            filteredCharacters = newList,
+            characters = newList,
+            likedCharacters = newList.filter { it.favourite }
+        )
+    }
+
+    fun filterCharacters(name: String) {
+
+        val characters = _state.value.characters
+        val filteredCharacter = characters.filter { name.lowercase() == it.name?.lowercase() }
+
+        _state.value = _state.value.copy(filteredCharacters = filteredCharacter)
+
+    }
+
+    fun resetCharacters() {
+        val characters = state.value.characters
+        _state.value = _state.value.copy(filteredCharacters = characters)
     }
 }
 

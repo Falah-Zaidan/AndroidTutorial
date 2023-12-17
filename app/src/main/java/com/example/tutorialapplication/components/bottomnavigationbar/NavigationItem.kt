@@ -1,4 +1,4 @@
-package com.example.tutorialapplication.bottomnavigationbar
+package com.example.tutorialapplication.components.bottomnavigationbar
 
 import com.example.tutorialapplication.R
 

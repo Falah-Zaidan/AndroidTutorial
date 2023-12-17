@@ -2,7 +2,7 @@ package com.example.tutorialapplication
 
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
-import com.example.tutorialapplication.screens.DetailScreen
+import com.example.tutorialapplication.screens.CharacterDetailScreen
 import com.example.tutorialapplication.ui.theme.TutorialApplicationTheme
 import com.example.tutorialapplication.util.ValidCharacterData
 import com.example.tutorialapplication.util.serializeCharacterData
@@ -27,10 +27,10 @@ class CharacterDetailScreenTest {
                     characters = characterData.toMutableList()
                 )
 
-                DetailScreen(
+                CharacterDetailScreen(
                     state = state,
                     characterId = randomCharacter.id
-                )
+                ) {}
             }
         }
     }

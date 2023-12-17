@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.example.tutorialapplication.R
-import com.example.tutorialapplication.bottomnavigationbar.BottomNavigationBar
+import com.example.tutorialapplication.components.bottomnavigationbar.BottomNavigationBar
 import com.example.tutorialapplication.components.SearchBarComponent
 import com.example.tutorialapplication.viewmodel.State
 
@@ -64,7 +64,7 @@ fun FavouriteScreen(
                     Text("Error")
                 } else {
                     LazyColumn(Modifier.testTag("favourite_list")) {
-                        items(state.filteredCharacters.filter { it.favourite == true }) { item ->
+                        items(state.likedCharacters) { item ->
                             Box(
                                 modifier = Modifier.fillMaxWidth(),
                                 contentAlignment = Alignment.CenterStart
