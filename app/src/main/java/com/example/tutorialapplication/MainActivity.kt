@@ -5,10 +5,8 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,6 +15,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,37 +23,74 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import coil.compose.rememberImagePainter
+import com.example.tutorialapplication.api.HPNetworkClient
+import com.example.tutorialapplication.screens.CharacterDetailScreen
+import com.example.tutorialapplication.screens.FavouriteScreen
+import com.example.tutorialapplication.screens.CharacterListScreen
+import com.example.tutorialapplication.screens.SpellScreen
 import com.example.tutorialapplication.ui.theme.TutorialApplicationTheme
+import com.example.tutorialapplication.viewmodel.HPViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             TutorialApplicationTheme {
-                //Alignment using a Column - items are stacked underneath each other, comment them in/out
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Top,
-                ) {
-                    TestText("Falah")
-                    ListExample()
-                    TestButton()
-                    ImageExample()
-                }
+                val navController = rememberNavController()
 
-                //Alignment using a Box - items stacked on top of each other, comment them in/out
-//                Box(
-//                    modifier = Modifier
-//                        .fillMaxSize(),
-//                    contentAlignment = Alignment.TopCenter
-//                ) {
-//                    TestText("Falah")
-//                    ListExample()
-//                    TestButton()
-//                    ImageExample()
-//                }
+                val viewModel = HPViewModel(HPNetworkClient.createHttpClient())
+
+                NavHost(
+                    navController = navController,
+                    startDestination = "ListScreen", //this is the screen we start on
+                    builder = {
+                        composable(route = "ListScreen") {
+                            CharacterListScreen(
+                                navController = navController,
+                                state = viewModel.state.collectAsState().value,
+                                filterCharacters = { viewModel.filterCharacters(name = it) },
+                                resetCharacters = { viewModel.resetCharacters() }
+                            ) //we pass in the navController so it can be used in the Screen
+                        }
+
+                        composable(route = "SpellScreen") {
+                            SpellScreen(
+                                navController = navController,
+                                state = viewModel.state.collectAsState().value
+                            )
+                        }
+
+                        composable(route = "FavouriteScreen") {
+                            FavouriteScreen(
+                                navController = navController,
+                                state = viewModel.state.collectAsState().value
+                            )
+                        }
+
+                        composable(route = "DetailScreen/{character_id}",
+                            arguments = listOf(
+                                navArgument("character_id") {
+                                    type = NavType.StringType
+                                }
+                            )) { backStackEntry ->
+
+                            //Get the characterID that is passed in with navigation
+                            val characterId =
+                                backStackEntry.arguments?.getString("character_id") ?: ""
+
+                            CharacterDetailScreen(
+                                state = viewModel.state.collectAsState().value,
+                                characterId = characterId,
+                                likeCharacter = { viewModel.likeCharacter(characterId) })
+                        }
+                    }
+                )
             }
         }
     }
@@ -121,7 +157,7 @@ fun ImageExample() {
 
     //Vector asset created using the Clip art library (right click drawable folder -> New -> Vector Asset)
     Image(
-        painterResource(id = R.drawable.ic_android_black_24dp),
+        painterResource(id = R.drawable.ic_launcher_background),
         contentDescription = "Android symbol"
     )
 

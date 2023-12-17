@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "TutorialApplication"
 include(":app")
- 
+include(":shared-test")
