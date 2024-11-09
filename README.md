@@ -4,7 +4,7 @@ Welcome to the Android basics project. This is a project demonstrating the basic
   - Kotlin basics
   - Compose basics
   - Making network requests
-  - Architecture basics: ViewModels and Flow
+  - Architecture basics, ViewModels and Flow
   - Unit and UI testing
 
 **What the app looks like:** 
