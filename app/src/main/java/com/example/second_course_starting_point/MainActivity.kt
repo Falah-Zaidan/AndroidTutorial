@@ -27,6 +27,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.second_course_starting_point.composables.ImageExample
+import com.example.second_course_starting_point.screens.MainScreen
+import com.example.second_course_starting_point.screens.ProfileScreen
 import com.example.second_course_starting_point.ui.theme.SecondcoursestartingpointTheme
 
 class MainActivity : ComponentActivity() {
@@ -36,57 +42,34 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             SecondcoursestartingpointTheme {
-                MainScreen(modifier = Modifier.fillMaxSize())
+                // this is our screen controller, it knows about all the screens in our NavHost
+                val navController = rememberNavController()
+
+                // The NavHost holds all of our Composable screens
+                NavHost(
+                    navController = navController,
+                    startDestination = "MainScreen",
+                    builder = {
+                        // This is our MainScreen, we need to pass it the navController to navigate to ProfileScreen
+                        composable("MainScreen") {
+                            MainScreen(
+                                modifier = Modifier.fillMaxSize(),
+                                navController = navController
+                            )
+                        }
+                        // This is our ProfileScreen
+                        composable("ProfileScreen") {
+                            ProfileScreen(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(top = 10.dp)
+                            )
+                        }
+                    }
+                )
             }
         }
     }
-}
-
-
-// Each Composable should only have one root element
-// Each Composable should also take a modifier, where the parent can set the size of the child
-// Apply padding to adjust content sizing rather than specifying fixed dp values
-@Composable
-fun MainScreen(modifier: Modifier = Modifier) {
-    // Stack contents one below/on top of each other
-    Column(
-        modifier = modifier.background(Color.Yellow),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-//        Greeting("Falah")
-//        Greeting("Yuning")
-//        Greeting("Kristina")
-//        Greeting("Nnamdi")
-        ListOfNames()
-        SimpleButton(
-            modifier = Modifier
-        )
-    }
-
-    // Stack contents one after the other
-//    Row(
-//        modifier = modifer,
-//        verticalAlignment = Alignment.CenterVertically,
-//        horizontalArrangement = Arrangement.Center
-//    ) {
-//        Greeting("Falah")
-//        Greeting("Yuning")
-//        Greeting("Kristina")
-//        Greeting("Nnamdi")
-//    }
-
-    // Stack contents over each other
-    // Useful for things like badges
-//    Box(
-//        modifier = modifer,
-//        contentAlignment = Alignment.Center
-//    ) {
-//        Greeting("Falah")
-//        Greeting("Yuning")
-//        Greeting("Kristina")
-//        Greeting("Nnamdi")
-//    }
 }
 
 // sizing using TextStyle
@@ -103,44 +86,16 @@ fun Greeting(name: String = "", modifier: Modifier = Modifier) {
     )
 }
 
-@Composable
-fun ListOfNames() {
-
-    val listOfNames = listOf("Falah", "Yuning", "Kristina", "Nnamdi")
-
-    LazyColumn {
-        items(listOfNames) { name ->
-            Text("Hi $name!")
-        }
-    }
-}
-
-// Set click behaviour and button background color
-@Composable
-fun SimpleButton(modifier: Modifier = Modifier) {
-    Button(
-        onClick = {
-            println("Button was clicked")
-        }, modifier = modifier,
-        colors = ButtonColors(
-            containerColor = Color.Red,
-            contentColor = Color.White,
-            disabledContentColor = Color.Blue,
-            disabledContainerColor = Color.Blue
-        )
-    ) {
-        Text("Name of Button")
-    }
-}
-
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     SecondcoursestartingpointTheme {
-        MainScreen(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(start = 10.dp, end = 10.dp, top = 15.dp, bottom = 15.dp)
-        )
+//        MainScreen(
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .padding(start = 10.dp, end = 10.dp, top = 15.dp, bottom = 15.dp)
+//        )
+//        ImageExample()
+        ProfileScreen(modifier = Modifier.padding(top = 10.dp))
     }
 }
