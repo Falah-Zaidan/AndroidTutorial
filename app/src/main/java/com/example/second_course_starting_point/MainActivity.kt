@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             SecondcoursestartingpointTheme {
-                // this is our screen controller, it knows about all the screens in our NavHost
+                // This is our screen controller, it knows about all the screens in our NavHost
                 val navController = rememberNavController()
 
                 // The NavHost holds all of our Composable screens
@@ -72,30 +72,15 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-// sizing using TextStyle
-// Font sizing, use sp values to adapt to user preferences for text size
-@Composable
-fun Greeting(name: String = "", modifier: Modifier = Modifier) {
-    Text(
-        style = TextStyle(
-            fontSize = 24.sp
-        ),
-        // String template
-        text = "Hi $name!",
-        modifier = modifier
-    )
-}
-
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun MainPreview() {
     SecondcoursestartingpointTheme {
 //        MainScreen(
 //            modifier = Modifier
 //                .fillMaxSize()
 //                .padding(start = 10.dp, end = 10.dp, top = 15.dp, bottom = 15.dp)
 //        )
-//        ImageExample()
         ProfileScreen(modifier = Modifier.padding(top = 10.dp))
     }
 }
