@@ -1,29 +1,26 @@
 package com.example.second_course_starting_point.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
-import com.example.second_course_starting_point.composables.SimpleButton
-import com.example.second_course_starting_point.composables.SimpleList
+import com.example.second_course_starting_point.composables.LikeButton
 
 // Each Composable should only have one root element
 // Each Composable should also take a modifier, where the parent can set the size of the child
 // Apply padding to adjust content sizing rather than specifying fixed dp values
 @Composable
-fun MainScreen(
+fun ListScreen(
     modifier: Modifier = Modifier,
     navController: NavController
 ) { // taking in NavController
     // Stack contents one below/on top of each other
     Column(
         modifier = modifier
-            .background(Color.Yellow)
+//            .background(Color.Yellow)
             .clickable {
                 navController.navigate("ProfileScreen")
             },
@@ -34,11 +31,12 @@ fun MainScreen(
 //        Greeting("Yuning")
 //        Greeting("Kristina")
 //        Greeting("Nnamdi")
-        val listOfNames = listOf("Falah", "Yuning", "Kristina", "Nnamdi")
-        SimpleList(listOfNames)
-        SimpleButton(
-            modifier = Modifier
-        )
+//        val listOfNames = listOf("Falah", "Yuning", "Kristina", "Nnamdi")
+//        SimpleList(listOfNames)
+//        SimpleButton(
+//            modifier = Modifier
+//        )
+        LikeButton()
     }
 
     // Stack contents one after the other

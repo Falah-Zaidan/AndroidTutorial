@@ -43,6 +43,7 @@ fun ImageExample() {
 
     // contentScale AND .clip() depend on each other,
     // compose will try to fit larger images if no content scale specified
+    // Clipping this to 
     Image(
         painter = image,
         modifier = Modifier
@@ -53,7 +54,7 @@ fun ImageExample() {
                 // launch camera/access gallery
                 Log.d("ImageExample", "Image clicked")
             },
-        contentScale = ContentScale.FillBounds,
+        contentScale = ContentScale.Crop,
         contentDescription = "coil image"
     )
 }

@@ -61,4 +61,7 @@ dependencies {
     // coil
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
+
+    // retrofit
+    implementation(libs.retrofit)
 }

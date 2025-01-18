@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import com.example.second_course_starting_point.composables.ImageExample
 
 @Composable
-fun ProfileScreen(
+fun DetailScreen(
     modifier: Modifier = Modifier
 ) {
     Column(
