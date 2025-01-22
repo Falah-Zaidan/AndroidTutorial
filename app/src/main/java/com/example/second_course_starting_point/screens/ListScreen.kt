@@ -1,11 +1,13 @@
 package com.example.second_course_starting_point.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import com.example.second_course_starting_point.composables.LikeButton
 
@@ -20,7 +22,7 @@ fun ListScreen(
     // Stack contents one below/on top of each other
     Column(
         modifier = modifier
-//            .background(Color.Yellow)
+            .background(Color.White)
             .clickable {
                 navController.navigate("ProfileScreen")
             },
