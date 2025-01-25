@@ -1,11 +1,14 @@
 package com.example.second_course_starting_point.api
 
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 data class CharacterModel(
+    @Expose
     @SerializedName("name")
     val name: String,
 
+    @Expose
     @SerializedName("id")
     val id: String,
 
@@ -25,6 +28,7 @@ data class CharacterModel(
 //    ]
 
     @SerializedName("alternate_names")
+    @Expose
     val alternateNames: List<String>,
 
 //    "wand": {

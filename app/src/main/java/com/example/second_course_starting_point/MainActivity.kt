@@ -11,9 +11,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.second_course_starting_point.api.ApiService
 import com.example.second_course_starting_point.api.RetrofitClient
 import com.example.second_course_starting_point.screens.ListScreen
@@ -28,8 +30,8 @@ class MainActivity : ComponentActivity() {
 
         val retrofitClient: ApiService = RetrofitClient.createHttpClient()
 
-        val viewModel: CharacterViewModel = CharacterViewModel(retrofitClient)
-        viewModel.getCharacters()
+//        val viewModel: CharacterViewModel = CharacterViewModel(retrofitClient)
+//        viewModel.getCharacters()
 
         setContent {
             SecondcoursestartingpointTheme {
@@ -49,11 +51,23 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         // This is our DetailScreen
-                        composable("DetailScreen") {
+                        composable(
+                            arguments = listOf(
+                                navArgument("character_id") {
+                                    type = NavType.StringType
+                                },
+//                                navArgument("")
+                            ),
+                            route = "DetailScreen/{character_id}"
+                        ) { backStackEntry ->
+
+                            val characterId =
+                                backStackEntry.arguments?.getString("character_id")
                             DetailScreen(
                                 modifier = Modifier
                                     .fillMaxSize()
-                                    .padding(top = 10.dp)
+                                    .padding(top = 10.dp),
+                                characterId = characterId ?: "empty"
                             )
                         }
                     }
@@ -72,6 +86,6 @@ fun MainPreview() {
 //                .fillMaxSize()
 //                .padding(start = 10.dp, end = 10.dp, top = 15.dp, bottom = 15.dp)
 //        )
-        DetailScreen(modifier = Modifier.padding(top = 10.dp))
+//        DetailScreen(modifier = Modifier.padding(top = 10.dp))
     }
 }

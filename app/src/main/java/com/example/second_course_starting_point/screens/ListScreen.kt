@@ -20,11 +20,15 @@ fun ListScreen(
     navController: NavController
 ) { // taking in NavController
     // Stack contents one below/on top of each other
+
+    val character_id = "5"
     Column(
         modifier = modifier
             .background(Color.White)
             .clickable {
-                navController.navigate("ProfileScreen")
+                // Pass in the argument when the user clicks on the column,
+                // it must be of the expected type
+                navController.navigate("DetailScreen/$character_id")
             },
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
