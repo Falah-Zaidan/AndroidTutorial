@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -13,14 +14,22 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.second_course_starting_point.api.ApiService
+import com.example.second_course_starting_point.api.RetrofitClient
 import com.example.second_course_starting_point.screens.ListScreen
 import com.example.second_course_starting_point.screens.DetailScreen
 import com.example.second_course_starting_point.ui.theme.SecondcoursestartingpointTheme
+import com.example.second_course_starting_point.viewmodel.CharacterViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        val retrofitClient: ApiService = RetrofitClient.createHttpClient()
+
+        val viewModel: CharacterViewModel = CharacterViewModel(retrofitClient)
+        viewModel.getCharacters()
 
         setContent {
             SecondcoursestartingpointTheme {
