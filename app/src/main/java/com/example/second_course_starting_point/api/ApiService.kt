@@ -4,6 +4,7 @@ import retrofit2.http.GET
 
 interface ApiService {
 
+    // Retrofit doesn't support List as the return type, use suspend and Flow as the return type
     @GET("characters")
-    fun getCharactersFromAPI(): List<CharacterModel>
+    suspend fun getCharactersFromAPI(): List<CharacterModel>
 }

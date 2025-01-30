@@ -7,9 +7,10 @@ import com.example.second_course_starting_point.api.ApiService
 import com.example.second_course_starting_point.api.RetrofitClient
 import kotlinx.coroutines.launch
 
-class CharacterViewModel(val retrofitClient: ApiService) : ViewModel() {
+class CharacterViewModel : ViewModel() {
 
     // Our HTTP client that we need to make the network request
+    val retrofitClient = RetrofitClient.createHttpClient()
 
     // init block will 'getCharacters() with the class is first created'
     init {

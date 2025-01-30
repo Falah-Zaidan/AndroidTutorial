@@ -28,10 +28,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val retrofitClient: ApiService = RetrofitClient.createHttpClient()
-
-//        val viewModel: CharacterViewModel = CharacterViewModel(retrofitClient)
-//        viewModel.getCharacters()
+        val viewModel: CharacterViewModel = CharacterViewModel()
 
         setContent {
             SecondcoursestartingpointTheme {

@@ -47,7 +47,7 @@ data class Wand(
     @SerializedName("core")
     val core: String,
     @SerializedName("length")
-    val length: Int // Double
+    val length: Double // Double
 
     //@SerializedName("boolean-key")
 //    val someBooleanReturnedFromJSON: Boolean
