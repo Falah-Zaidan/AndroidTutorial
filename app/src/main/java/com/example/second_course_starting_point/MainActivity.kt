@@ -8,6 +8,7 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -28,7 +29,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val viewModel: CharacterViewModel = CharacterViewModel()
+        val viewModel: CharacterViewModel by viewModels()
 
         setContent {
             SecondcoursestartingpointTheme {
@@ -44,7 +45,8 @@ class MainActivity : ComponentActivity() {
                         composable("ListScreen") {
                             ListScreen(
                                 modifier = Modifier.fillMaxSize(),
-                                navController = navController
+                                navController = navController,
+                                viewData = viewModel.state.collectAsState().value
                             )
                         }
                         // This is our DetailScreen
@@ -57,14 +59,18 @@ class MainActivity : ComponentActivity() {
                             ),
                             route = "DetailScreen/{character_id}"
                         ) { backStackEntry ->
-
                             val characterId =
                                 backStackEntry.arguments?.getString("character_id")
+
+                            characterId?.let {
+                                viewModel.filterCharacters(characterId)
+                            }
+
                             DetailScreen(
                                 modifier = Modifier
                                     .fillMaxSize()
                                     .padding(top = 10.dp),
-                                characterId = characterId ?: "empty"
+                                viewData = viewModel.characterState.collectAsState().value
                             )
                         }
                     }
