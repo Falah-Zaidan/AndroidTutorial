@@ -31,7 +31,6 @@ fun DetailScreen(
     modifier: Modifier = Modifier,
     viewData: DataState<CharacterModel>
 ) {
-
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(title = { Text(text = "Character", fontSize = 30.sp) })
@@ -91,15 +90,12 @@ fun DetailScreen(
                             }
                         }
                     }
-
                     is DataState.Loading -> {
                         CircularProgressIndicator()
                     }
-
                     is DataState.Error -> {
                         Text("Error")
                     }
-
                     is DataState.UnInitialised -> {
                         // Nothing to display
                     }

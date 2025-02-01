@@ -13,5 +13,4 @@ object RetrofitClient { // only want one client in the app
 
         return retrofitBuilder.create(ApiService::class.java)
     }
-
 }

@@ -39,14 +39,11 @@ fun ListScreen(
     navController: NavController,
     viewData: DataState<List<CharacterModel>>,
 ) {
-//    val character_id = "9e3f7ce4-b9a7-4244-b709-dae5c1f1d4a8"
-
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(title = { Text(text = "Characters", fontSize = 30.sp) })
         },
         bottomBar = {
-//            BottomNavigationBar(navController = navController)
         },
         content = { innerPadding ->
             Column(

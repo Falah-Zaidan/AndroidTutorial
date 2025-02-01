@@ -12,7 +12,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.second_course_starting_point.R
 
-
 // Marking with @Compose and using MutableState for reactive behaviour
 // Any time there is a change to the MutableState, the Composable is re-composed/logic executed again
 @Composable
