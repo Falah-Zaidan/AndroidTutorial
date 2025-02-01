@@ -17,7 +17,7 @@ import com.example.second_course_starting_point.R
 // Any time there is a change to the MutableState, the Composable is re-composed/logic executed again
 @Composable
 fun LikeButton(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var likeButtonState by remember { mutableStateOf(false) }
 

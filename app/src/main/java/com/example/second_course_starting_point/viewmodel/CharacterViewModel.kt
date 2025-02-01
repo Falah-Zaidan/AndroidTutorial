@@ -53,7 +53,6 @@ class CharacterViewModel : ViewModel() {
             characterState.value = DataState.Error("An error has occurred")
         }
     }
-
 }
 
 // Animal class - function to breathe
