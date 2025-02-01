@@ -43,9 +43,8 @@ class CharacterViewModel : ViewModel() {
     fun filterCharacters(characterId: String) {
         characterState.value = DataState.Loading
 
-        val character = (state.value as? DataState.Success)?.data?.first {
-            it.id == characterId
-        }
+        val characters = (state.value as? DataState.Success)?.data
+        val character = characters?.firstOrNull { it.id == characterId }
 
         if (character != null) {
             characterState.value = DataState.Success(character)
